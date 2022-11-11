@@ -11,11 +11,12 @@ interface ValueWithName extends Omit<Value, "name"> {
   name: string
 }
 
-const useAssets = (lucid?: Lucid, networkId?: number) => {
-  const [assets, setAssets] = useState<Responses["asset"][]>([])
-  const [lovelace, setLovelace] = useState(0)
+const tooligansPolicyId = "aa4411ee213166c23050ec6b3e782500fd3f9210121d607378622548"
 
-  const fetchAssets = useCallback(async () => {
+const useTooligansAssets = (lucid?: Lucid, networkId?: number) => {
+  const [tooligansAssets, setTooligansAssets] = useState<Responses["asset"][]>([])
+
+  const fetchTooligans = useCallback(async () => {
     if (!lucid?.wallet) return
 
     const utxos = await lucid.wallet.getUtxos()
@@ -28,12 +29,8 @@ const useAssets = (lucid?: Lucid, networkId?: number) => {
         value: Number(a.value),
       }))
 
-    const lovelaces = allUtxos
-      .filter((u) => u.policyId === "lovelace")
-      .reduce((acc, curr) => acc + curr.value, 0)
-
     const utxoAssets = allUtxos
-      .filter((u) => u.policyId !== "lovelace")
+      .filter((u) => u.policyId === tooligansPolicyId)
       .filter((v: Value): v is ValueWithName => v.name !== null)
       .map((a) => ({
         ...a,
@@ -56,18 +53,14 @@ const useAssets = (lucid?: Lucid, networkId?: number) => {
       "onchain_metadata.name"
     )
 
-    setLovelace(lovelaces)
-    setAssets(sortedAssets)
+    setTooligansAssets(sortedAssets)
   }, [lucid?.wallet, networkId])
 
   useEffect(() => {
-    fetchAssets()
-  }, [fetchAssets])
+    fetchTooligans()
+  }, [fetchTooligans])
 
-  return {
-    lovelace,
-    assets,
-  }
+  return tooligansAssets
 }
 
-export { useAssets }
+export { useTooligansAssets }

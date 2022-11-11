@@ -1,7 +1,8 @@
+* { margin:0; padding:0; } /* to remove the top and left whitespace */
+
 html,
-body {
-  padding: 0;
-  margin: 0;
+body,
+#__next {
   height: 100vh;
   overflow-y: auto;
   background: rgb(245, 229, 163);
