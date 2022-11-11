@@ -4,7 +4,7 @@ import { useCanvas } from "hooks/use-canvas"
 import { useHasNamiExtension } from "hooks/use-has-nami-extension"
 import { useImage } from "hooks/use-image"
 import { useLucid } from "hooks/use-lucid"
-import { useTooligansImages } from "hooks/use-tooligans-images"
+import { useTooligans } from "hooks/use-tooligans"
 import { useState } from "react"
 
 import styles from "../styles/index.module.css"
@@ -16,7 +16,7 @@ const Index = () => {
 
   const hasNamiExtension = useHasNamiExtension()
   const { lucid, networkId } = useLucid()
-  const tooligansImages = useTooligansImages(lucid, networkId)
+  const tooligans = useTooligans(lucid, networkId)
 
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
@@ -26,7 +26,7 @@ const Index = () => {
   if (!lucid) return null
 
   // not loaded yet
-  if (!tooligansImages.length)
+  if (!tooligans.length)
     return (
       <div className={styles.container}>
         <div className={styles.left} />
@@ -51,7 +51,7 @@ const Index = () => {
         <Game
           canvas={canvas}
           ballImage={ballImage}
-          tooligansImages={tooligansImages}
+          tooligans={tooligans}
           onLevelCompleted={() => setLevel((lastLevel) => lastLevel + 1)}
         />
       </div>

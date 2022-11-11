@@ -1,5 +1,6 @@
 import createGame, { Game } from "gameloop"
 import { UseCanvas } from "hooks/use-canvas"
+import { Tooligan } from "hooks/use-tooligans"
 import { Image } from "lib/async-image-loading"
 import { drawAudience } from "lib/draw-audience"
 import { drawBall } from "lib/draw-ball"
@@ -11,7 +12,7 @@ let game: Game | null = null
 interface Props {
   canvas: UseCanvas
   ballImage: HTMLImageElement | null
-  tooligansImages: Image[]
+  tooligans: Tooligan[]
   onLevelCompleted: () => void
 }
 
@@ -31,7 +32,7 @@ type Easing = ReturnType<typeof easeBetweenPoints>
 
 let easing: Easing | undefined
 
-const Game = ({ canvas, ballImage, tooligansImages, onLevelCompleted }: Props) => {
+const Game = ({ canvas, ballImage, tooligans, onLevelCompleted }: Props) => {
   const [scored, setScored] = useState(false)
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const Game = ({ canvas, ballImage, tooligansImages, onLevelCompleted }: Props) =
 
   const draw = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      drawAudience(ctx, tooligansImages)
+      drawAudience(ctx, tooligans)
 
       if (scored) {
         ctx.font = "bold 48px sans-serif"
@@ -88,7 +89,7 @@ const Game = ({ canvas, ballImage, tooligansImages, onLevelCompleted }: Props) =
 
       drawBall(ctx, ballImage, ballPos)
     },
-    [scored, ballImage, tooligansImages]
+    [scored, ballImage, tooligans]
   )
 
   useEffect(() => {
