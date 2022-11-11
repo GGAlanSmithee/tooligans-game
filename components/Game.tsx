@@ -58,8 +58,8 @@ const Game = ({ canvas, ballImage, tooligansImages }: Props) => {
   const draw = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       drawAudience(ctx, tooligansImages)
-      drawBall(ctx, ballImage, ballPos)
       drawTarget(ctx, targetPos)
+      drawBall(ctx, ballImage, ballPos)
     },
     [ballImage, tooligansImages]
   )

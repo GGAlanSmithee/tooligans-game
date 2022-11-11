@@ -49,3 +49,11 @@
 .button:hover {
   background: #eaeaea;
 }
+
+.header, .footer {
+  text-align: center;
+}
+
+.footer {
+  margin-top: 2rem;
+}

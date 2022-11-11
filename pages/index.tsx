@@ -39,17 +39,18 @@ const Index = () => {
       <aside className={styles.left}></aside>
 
       <div>
-        {/* <canvas className={styles.mainCanvas} width="1000" height="1000" /> */}
+        <div className={styles.header}>
+          <h1>TooliGames</h1>
 
+        </div>
         <Game canvas={canvas} ballImage={ballImage} tooligansImages={tooligansImages} />
+
+        <div className={styles.footer}>
+          <p>[space] to shoot</p>
+        </div>
       </div>
 
-      <aside className={styles.right}>
-        <h1>TooliGames</h1>
-        <div>
-          <button className={styles.button}>SHOOT</button>
-        </div>
-      </aside>
+      <aside className={styles.right} />
     </div>
   )
 }
