@@ -14,7 +14,7 @@
   background: url("/images/soccer-field.jpg");
   background-position-y: 132px;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   border-bottom: 1px solid black;
 }
 
@@ -22,12 +22,17 @@
 .right {
   flex-grow: 1;
   width: 200px;
+  margin-top: 222px;
+}
+
+.left {
+  text-align: right;
+  padding-right: 2rem;
 }
 
 .right {
-  margin-top: 165px;
-  padding: 0 1rem;
-  text-align: center;
+  text-align: left;
+  padding-left: 2rem;
 }
 
 .center {
@@ -50,10 +55,10 @@
   background: #eaeaea;
 }
 
-.header, .footer {
+.header {
   text-align: center;
 }
 
-.footer {
-  margin-top: 2rem;
+.instructionsList {
+  list-style: none;
 }

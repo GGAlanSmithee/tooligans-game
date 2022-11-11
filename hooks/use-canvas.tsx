@@ -39,7 +39,7 @@ const useCanvas = (): UseCanvas => {
   }, [])
 
   const CanvasEl = (
-    <canvas id="main-canvas" className={styles.mainCanvas} width="1000" height="1000" />
+    <canvas id="main-canvas" className={styles.mainCanvas} width="1000" height="2000" />
   )
 
   return { el: CanvasEl, ctx, width, height }
