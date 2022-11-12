@@ -1,15 +1,18 @@
+import { Level } from "data/levels"
 import createGame, { Game } from "gameloop"
 import { UseCanvas } from "hooks/use-canvas"
+import { useImage } from "hooks/use-image"
 import { Tooligan } from "hooks/use-tooligans"
-import { Image } from "lib/async-image-loading"
 import { drawAudience } from "lib/draw-audience"
 import { drawBall } from "lib/draw-ball"
+import { drawWall } from "lib/draw-wall"
 import { easeBetweenPoints } from "lib/ease-between-points"
 import { useCallback, useEffect, useState } from "react"
 
 let game: Game | null = null
 
 interface Props {
+  level: Level
   canvas: UseCanvas
   ballImage: HTMLImageElement | null
   tooligans: Tooligan[]
@@ -32,8 +35,10 @@ type Easing = ReturnType<typeof easeBetweenPoints>
 
 let easing: Easing | undefined
 
-const Game = ({ canvas, ballImage, tooligans, onLevelCompleted }: Props) => {
+const Game = ({ level, canvas, ballImage, tooligans, onLevelCompleted }: Props) => {
   const [scored, setScored] = useState(false)
+
+  const { image: wallImage } = useImage("/images/wall-player.png")
 
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -87,15 +92,18 @@ const Game = ({ canvas, ballImage, tooligans, onLevelCompleted }: Props) => {
         ctx.fillText("[space] to continue", 400, 615)
       }
 
+      for (const wall of level.walls) {
+        drawWall(ctx, wall, wallImage)
+      }
+
       drawBall(ctx, ballImage, ballPos)
     },
-    [scored, ballImage, tooligans]
+    [scored, level.walls, tooligans, ballImage, wallImage]
   )
 
   useEffect(() => {
     if (!game) {
       if (!canvas.ctx) return
-
 
       game = createGame({
         renderer: canvas.ctx,

@@ -25,5 +25,5 @@ const asyncImageLoading = (src?: string, onLoad?: OnLoad): Promise<Image> =>
     }
   })
 
-  export type { Image }
+export type { Image }
 export { asyncImageLoading }

@@ -1,16 +1,20 @@
 import { Game } from "components/Game"
 import { LevelInstructions } from "components/LevelInstructions"
+import { defaultLevel, levels } from "data/levels"
 import { useCanvas } from "hooks/use-canvas"
 import { useHasNamiExtension } from "hooks/use-has-nami-extension"
 import { useImage } from "hooks/use-image"
 import { useLucid } from "hooks/use-lucid"
 import { useTooligans } from "hooks/use-tooligans"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 import styles from "../styles/index.module.css"
 
 const Index = () => {
   const [level, setLevel] = useState(1)
+
+  const levelData = useMemo(() => levels[level] || defaultLevel, [level])
+
   const canvas = useCanvas()
   const { image: ballImage } = useImage("/images/soccer-ball.png")
 
@@ -49,6 +53,7 @@ const Index = () => {
         </div>
 
         <Game
+          level={levelData}
           canvas={canvas}
           ballImage={ballImage}
           tooligans={tooligans}
