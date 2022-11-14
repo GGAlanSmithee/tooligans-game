@@ -45,7 +45,21 @@ const Index = () => {
   return (
     <div className={styles.container}>
       <aside className={styles.left}>
-        <h1>Level {level}</h1>
+        <h2>Level {level}</h2>
+
+        {level > 1 && (
+          <>
+          <br/> 
+          <h2>Previous levels</h2>
+          <ul>
+            {Array.from({ length: level - 1 }, (_, i) => (
+              <li key={`level-${i}`}>
+                <span onClick={() => setLevel(i + 1)}>Level {i + 1}</span>
+              </li>
+            ))}
+          </ul>
+          </>
+        )}
       </aside>
 
       <div>

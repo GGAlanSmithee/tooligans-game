@@ -20,8 +20,7 @@ export const LevelInstructions = ({ level, tooligans, selected, setSelected }: P
         <p>[space] to shoot</p>
       ) : (
         <ul className={styles.instructionsList}>
-          <li>Click to place your Tooligans</li>
-          <li>Set order to pass</li>
+          <li>Place your Tooligans</li>
           <li>[space] to shoot</li>
         </ul>
       )}
