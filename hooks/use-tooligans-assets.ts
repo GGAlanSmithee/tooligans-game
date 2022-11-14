@@ -13,7 +13,7 @@ interface ValueWithName extends Omit<Value, "name"> {
 
 const tooligansPolicyId = "aa4411ee213166c23050ec6b3e782500fd3f9210121d607378622548"
 
-const useTooligansAssets = (lucid?: Lucid, networkId?: number) => {
+const useTooligansAssets = (lucid?: Lucid, networkId?: number): Responses["asset"][] => {
   const [tooligansAssets, setTooligansAssets] = useState<Responses["asset"][]>([])
 
   const fetchTooligans = useCallback(async () => {

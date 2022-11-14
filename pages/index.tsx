@@ -62,7 +62,7 @@ const Index = () => {
       </div>
 
       <aside className={styles.right}>
-        <LevelInstructions level={level} />
+        <LevelInstructions level={level} tooligans={tooligans} />
       </aside>
     </div>
   )

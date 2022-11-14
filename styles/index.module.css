@@ -62,3 +62,7 @@
 .instructionsList {
   list-style: none;
 }
+
+.tooligansListElement {
+  user-select: none;
+}

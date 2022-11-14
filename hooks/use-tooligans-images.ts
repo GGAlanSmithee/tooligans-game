@@ -1,13 +1,12 @@
-import { useTooligansAssets } from "hooks/use-tooligans-assets"
 import { asyncImageLoading, Image } from "lib/async-image-loading"
 import { makeTransparent } from "lib/make-transparent"
-import { Lucid } from "lucid-cardano"
 import { useEffect, useState } from "react"
 
-const useTooligansImages = (lucid?: Lucid, networkId?: number) => {
+import { Responses } from "@blockfrost/blockfrost-js"
+
+const useTooligansImages = (tooligansAssets: Responses["asset"][]): Image[] => {
   const [loaded, setLoaded] = useState(false)
-  const [tooliganImages, setTooliganImages] = useState<Image[]>([])
-  const tooligansAssets = useTooligansAssets(lucid, networkId)
+  const [tooligansImages, setTooligansImages] = useState<Image[]>([])
 
   useEffect(() => {
     if (loaded || tooligansAssets.length <= 0) return
@@ -24,11 +23,11 @@ const useTooligansImages = (lucid?: Lucid, networkId?: number) => {
         )
       )
     )
-      .then(setTooliganImages)
+      .then(setTooligansImages)
       .catch(console.error)
   }, [tooligansAssets, loaded])
 
-  return tooliganImages
+  return tooligansImages
 }
 
 export { useTooligansImages }
