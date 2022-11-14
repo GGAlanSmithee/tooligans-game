@@ -8,10 +8,8 @@ import { useTooligansAssets } from "./use-tooligans-assets"
 import { useTooligansImages } from "./use-tooligans-images"
 
 export interface Tooligan {
-  pos: {
-    x: number
-    y: number
-  }
+  originalPos: { x: number; y: number }
+  pos: { x: number; y: number }
   asset: Responses["asset"]
   image: Image
 }
@@ -36,6 +34,7 @@ export const useTooligans = (lucid?: Lucid, networkId?: number) => {
         const y = -1
 
         return {
+          originalPos: { x, y },
           pos: { x, y },
           ...tooligan,
         }

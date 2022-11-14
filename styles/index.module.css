@@ -65,4 +65,13 @@
 
 .tooligansListElement {
   user-select: none;
+  margin-right: 2rem;
+}
+
+.tooligansLabel {
+  cursor: pointer !important;
+}
+
+.tooligansResetButton {
+  float: right;
 }

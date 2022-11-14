@@ -1,4 +1,5 @@
 import { Tooligan } from "hooks/use-tooligans"
+import { isEqual } from "lodash"
 import { useState } from "react"
 
 import styles from "../styles/index.module.css"
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export const LevelInstructions = ({ level, tooligans }: Props) => {
-  const [selected, setSelected] = useState("")
+  const [selected, setSelected] = useState<string>()
 
   return (
     <>
@@ -34,11 +35,11 @@ export const LevelInstructions = ({ level, tooligans }: Props) => {
             {tooligans.map((tooligan, i) => {
               const name = tooligan.asset.onchain_metadata?.name
 
-              if (!name) return null
+              const isPlaced = !isEqual(tooligan.originalPos, tooligan.pos)
 
               return (
                 <li key={`${name}.${i}`} className={styles.tooligansListElement}>
-                  <label>
+                  <label className={styles.tooligansLabel}>
                     <input
                       type="checkbox"
                       checked={selected === name}
@@ -49,10 +50,19 @@ export const LevelInstructions = ({ level, tooligans }: Props) => {
                     />{" "}
                     {name}
                   </label>
+
+                  {isPlaced && <small className={styles.tooligansResetButton}>⭯</small>}
                 </li>
               )
             })}
           </ul>
+
+          {selected && (
+            <>
+              <br />
+              <h4>← Click to place {selected}</h4>
+            </>
+          )}
         </>
       )}
     </>
