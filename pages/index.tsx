@@ -21,6 +21,7 @@ const Index = () => {
   const hasNamiExtension = useHasNamiExtension()
   const { lucid, networkId } = useLucid()
   const tooligans = useTooligans(lucid, networkId)
+  const [selectedTooligan, setSelectedTooligan] = useState<string>()
 
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
@@ -58,11 +59,17 @@ const Index = () => {
           ballImage={ballImage}
           tooligans={tooligans}
           onLevelCompleted={() => setLevel((lastLevel) => lastLevel + 1)}
+          selectedTooligan={selectedTooligan}
         />
       </div>
 
       <aside className={styles.right}>
-        <LevelInstructions level={level} tooligans={tooligans} />
+        <LevelInstructions
+          level={level}
+          tooligans={tooligans}
+          selected={selectedTooligan}
+          setSelected={setSelectedTooligan}
+        />
       </aside>
     </div>
   )

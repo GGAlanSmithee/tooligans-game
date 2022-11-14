@@ -7,11 +7,11 @@ import styles from "../styles/index.module.css"
 interface Props {
   level: number
   tooligans: Tooligan[]
+  selected?: string
+  setSelected: (selected?: string) => void
 }
 
-export const LevelInstructions = ({ level, tooligans }: Props) => {
-  const [selected, setSelected] = useState<string>()
-
+export const LevelInstructions = ({ level, tooligans, selected, setSelected }: Props) => {
   return (
     <>
       <h2>Instructions</h2>
@@ -51,7 +51,10 @@ export const LevelInstructions = ({ level, tooligans }: Props) => {
                     {name}
                   </label>
 
-                  {isPlaced && <small className={styles.tooligansResetButton}>⭯</small>}
+                  {isPlaced && <small className={styles.tooligansResetButton} onClick={() => {
+                    tooligan.pos.x = tooligan.originalPos.x
+                    tooligan.pos.y = tooligan.originalPos.y
+                  }}>⭯</small>}
                 </li>
               )
             })}
