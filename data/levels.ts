@@ -1,8 +1,11 @@
 import { Dictionary } from "lodash"
 
-export interface Wall {
+export interface Pos {
   x: number
   y: number
+}
+
+export interface Wall extends Pos {
   count: number
 }
 
@@ -14,8 +17,20 @@ export const defaultLevel: Level = {
   walls: [],
 }
 
+export const wallPlayerDimensions = {
+  width: 40,
+  height: 104,
+}
+
 export const levels: Dictionary<Level> = {
   "2": {
-    walls: [{ x: 380, y: 475, count: 3 }],
+    walls: [{ x: 435, y: 475, count: 3 }],
+  },
+  "3": {
+    walls: [
+      { x: 580, y: 525, count: 2 },
+      { x: 100, y: 475, count: 2 },
+      { x: 600, y: 325, count: 2 },
+    ],
   },
 }

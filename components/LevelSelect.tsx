@@ -14,10 +14,13 @@ export const LevelSelect = ({ level, setLevel }: Props) => {
         <>
           <br />
           <h2>Previous levels</h2>
+
           <ul>
             {Array.from({ length: level - 1 }, (_, i) => (
               <li key={`level-${i}`}>
-                <span className={styles.levelSelectItem} onClick={() => setLevel(i + 1)}>Level {i + 1}</span>
+                <span className={styles.levelSelectItem} onClick={() => setLevel(i + 1)}>
+                  Level {i + 1}
+                </span>
               </li>
             ))}
           </ul>

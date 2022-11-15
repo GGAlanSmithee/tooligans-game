@@ -3,11 +3,12 @@ import createGame, { Game } from "gameloop"
 import { UseCanvas } from "hooks/use-canvas"
 import { useImage } from "hooks/use-image"
 import { Tooligan } from "hooks/use-tooligans"
+import { collidesWithWall } from "lib/collision"
 import { drawBall } from "lib/draw-ball"
 import { drawTooligans } from "lib/draw-tooligans"
 import { drawWall } from "lib/draw-wall"
 import { easeBetweenPoints } from "lib/ease-between-points"
-import { forEach, isEqual } from "lodash"
+import { isEqual } from "lodash"
 import { useCallback, useEffect, useState } from "react"
 
 type TravelFunction = ReturnType<typeof easeBetweenPoints>
@@ -119,6 +120,7 @@ const Game = ({
         pos: { x, y },
         targetPos: target,
       } = ballPath[0](dt)
+
       ballPos.x = x
       ballPos.y = y
 
@@ -134,24 +136,12 @@ const Game = ({
         }
       }
 
-      if (wallImage) {
-        const w = wallImage.width / 6
-        const h = wallImage.height / 6
-
-        level.walls.forEach((wall) => {
-          if (
-            ballPos.x + w > wall.x &&
-            ballPos.x < wall.x + w &&
-            ballPos.y + h > wall.y &&
-            ballPos.y < wall.y + h
-          ) {
-            ballPath = []
-            setFailed(true)
-          }
-        })
+      if (collidesWithWall(level.walls, ballPos)) {
+        ballPath = []
+        setFailed(true)
       }
     },
-    [setScored, level.walls, wallImage]
+    [setScored, setFailed, level.walls]
   )
 
   const draw = useCallback(
