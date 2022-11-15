@@ -9,13 +9,16 @@ export function easeBetweenPoints(velocity: number, p1: Pos, p2: Pos) {
   const pos = { ...p1 }
 
   return (t: number) => {
-    const distanceX = pos.x - p2.x
-    const distanceY = pos.y - p2.y
+    const distanceX = p1.x - p2.x
+    const distanceY = p1.y - p2.y
 
-    pos.x += t * (++i / 2) * velocity * -distanceX
-    pos.y += t * (++i / 2) * velocity * -distanceY
+    pos.x += t * velocity * -distanceX
+    pos.y += t * velocity * -distanceY
 
-    return pos
+    return {
+      pos,
+      targetPos: p2,
+    }
   }
 }
 

@@ -6,7 +6,7 @@ import { useHasNamiExtension } from "hooks/use-has-nami-extension"
 import { useImage } from "hooks/use-image"
 import { useLucid } from "hooks/use-lucid"
 import { useTooligans } from "hooks/use-tooligans"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import styles from "../styles/index.module.css"
 
@@ -22,6 +22,13 @@ const Index = () => {
   const { lucid, networkId } = useLucid()
   const tooligans = useTooligans(lucid, networkId)
   const [selectedTooligan, setSelectedTooligan] = useState<string>()
+
+  useEffect(() => {
+    if (level > 1 && selectedTooligan === undefined && tooligans.length > 0) {
+      const name = tooligans[0].asset.onchain_metadata?.name
+      if (name) setSelectedTooligan(name)
+    }
+  }, [level, selectedTooligan, tooligans])
 
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
@@ -49,15 +56,15 @@ const Index = () => {
 
         {level > 1 && (
           <>
-          <br/> 
-          <h2>Previous levels</h2>
-          <ul>
-            {Array.from({ length: level - 1 }, (_, i) => (
-              <li key={`level-${i}`}>
-                <span onClick={() => setLevel(i + 1)}>Level {i + 1}</span>
-              </li>
-            ))}
-          </ul>
+            <br />
+            <h2>Previous levels</h2>
+            <ul>
+              {Array.from({ length: level - 1 }, (_, i) => (
+                <li key={`level-${i}`}>
+                  <span onClick={() => setLevel(i + 1)}>Level {i + 1}</span>
+                </li>
+              ))}
+            </ul>
           </>
         )}
       </aside>
@@ -72,7 +79,13 @@ const Index = () => {
           canvas={canvas}
           ballImage={ballImage}
           tooligans={tooligans}
-          onLevelCompleted={() => setLevel((lastLevel) => lastLevel + 1)}
+          onLevelCompleted={() => {
+            tooligans.forEach((t) => {
+              t.pos.x = t.originalPos.x
+              t.pos.y = t.originalPos.y
+            })
+            setLevel((lastLevel) => lastLevel + 1)
+          }}
           selectedTooligan={selectedTooligan}
         />
       </div>

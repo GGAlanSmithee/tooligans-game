@@ -7,11 +7,12 @@ import { drawBall } from "lib/draw-ball"
 import { drawTooligans } from "lib/draw-tooligans"
 import { drawWall } from "lib/draw-wall"
 import { easeBetweenPoints } from "lib/ease-between-points"
+import { forEach, isEqual } from "lodash"
 import { useCallback, useEffect, useState } from "react"
 
-type Easing = ReturnType<typeof easeBetweenPoints>
+type TravelFunction = ReturnType<typeof easeBetweenPoints>
 
-let easing: Easing | undefined
+let ballPath: TravelFunction[] = []
 let game: Game | null = null
 
 const targetPos = {
@@ -55,6 +56,8 @@ const Game = ({
       if (!game) return
 
       if (e.key === " ") {
+        const players = tooligans.filter((t) => !isEqual(t.pos, t.originalPos))
+
         if (scored) {
           onLevelCompleted()
           ballPos.x = ballStartPos.x
@@ -64,8 +67,21 @@ const Game = ({
           ballPos.x = ballStartPos.x
           ballPos.y = ballStartPos.y
           setFailed(false)
+        } else if (players.length > 0) {
+          ballPath = []
+
+          for (let i = 0; i < players.length; i++) {
+            const startPos = i === 0 ? ballStartPos : players[i - 1].pos
+
+            const player = players[i]
+            const targetPos = player.pos
+
+            ballPath.push(easeBetweenPoints(3, startPos, targetPos))
+          }
+
+          ballPath.push(easeBetweenPoints(3, players[players.length - 1].pos, { ...targetPos }))
         } else {
-          easing = easeBetweenPoints(1, { ...ballPos }, { ...targetPos })
+          ballPath = [easeBetweenPoints(3, { ...ballPos }, { ...targetPos })]
         }
       }
     }
@@ -74,6 +90,8 @@ const Game = ({
 
     const handleClick = (e: MouseEvent) => {
       if (!el || !game) return
+
+      if (scored || failed) return
 
       const rect = el.getBoundingClientRect()
 
@@ -91,39 +109,46 @@ const Game = ({
       document.removeEventListener("keyup", handleKeyUp)
       el?.removeEventListener("click", handleClick)
     }
-  }, [canvas, tooligans, scored, setScored, failed, setFailed, onLevelCompleted])
+  }, [canvas, tooligans, scored, setScored, failed, setFailed, onLevelCompleted, selectedTooligan])
 
   const update = useCallback(
     (dt: number) => {
-      if (easing) {
-        const { x, y } = easing(dt)
-        ballPos.x = x
-        ballPos.y = y
+      if (ballPath.length <= 0) return
 
-        const xDiff = ballPos.x - targetPos.x
-        const yDiff = ballPos.y - targetPos.y
+      const {
+        pos: { x, y },
+        targetPos: target,
+      } = ballPath[0](dt)
+      ballPos.x = x
+      ballPos.y = y
 
-        if (Math.abs(xDiff) < 1 && Math.abs(yDiff) < 1) {
-          easing = undefined
+      const xDiff = ballPos.x - target.x
+      const yDiff = ballPos.y - target.y
+
+      if (Math.abs(xDiff) < 1 && Math.abs(yDiff) < 1) {
+        ballPath.shift()
+
+        if (ballPath.length === 0) {
           setScored(true)
+          return
         }
+      }
 
-        if (wallImage) {
-          const w = wallImage.width / 6
-          const h = wallImage.height / 6
+      if (wallImage) {
+        const w = wallImage.width / 6
+        const h = wallImage.height / 6
 
-          level.walls.forEach((wall) => {
-            if (
-              ballPos.x + w > wall.x &&
-              ballPos.x < wall.x + w &&
-              ballPos.y + h > wall.y &&
-              ballPos.y < wall.y + h
-            ) {
-              easing = undefined
-              setFailed(true)
-            }
-          })
-        }
+        level.walls.forEach((wall) => {
+          if (
+            ballPos.x + w > wall.x &&
+            ballPos.x < wall.x + w &&
+            ballPos.y + h > wall.y &&
+            ballPos.y < wall.y + h
+          ) {
+            ballPath = []
+            setFailed(true)
+          }
+        })
       }
     },
     [setScored, level.walls, wallImage]
