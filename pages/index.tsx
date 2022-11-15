@@ -14,7 +14,14 @@ import styles from "../styles/index.module.css"
 const Index = () => {
   const [level, setLevel] = useState(1)
 
-  const levelData = useMemo(() => levels[level] || defaultLevel, [level])
+  const levelData = useMemo(() => {
+    const levelData = levels[level] || defaultLevel
+
+    return {
+      ...levelData,
+      number: level,
+    }
+  }, [level])
 
   const canvas = useCanvas()
   const { image: ballImage } = useImage("/images/soccer-ball.png")
@@ -34,25 +41,19 @@ const Index = () => {
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
     return (
-      <div>
-        This game currently only works with the Nami extension installed. Please install it.
+      <div className={styles.container}>
+        <div className={styles.left} />
+        <div>
+          <h1>
+            This game currently only works with the Nami extension installed. Please install it.
+          </h1>
+        </div>
+        <div className={styles.right} />
       </div>
     )
 
   // not initialized yet
   if (!lucid) return null
-
-  // not loaded yet
-  if (!tooligans.length)
-    return (
-      <div className={styles.container}>
-        <div className={styles.left} />
-        <div>
-          <h1>Loading ...</h1>
-        </div>
-        <div className={styles.right} />
-      </div>
-    )
 
   return (
     <>

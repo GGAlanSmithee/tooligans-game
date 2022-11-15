@@ -190,7 +190,7 @@ const Game = ({
     (ctx: CanvasRenderingContext2D) => {
       for (const wall of level.walls) drawWall(ctx, wall, wallImage)
 
-      drawTooligans(ctx, tooligans)
+      drawTooligans(ctx, tooligans, level.number)
 
       drawBall(ctx, ballImage, ballPos)
 
@@ -217,7 +217,17 @@ const Game = ({
         ctx.fillText("[space] to retry", 415, 615)
       }
     },
-    [canvas.height, canvas.width, scored, failed, level.walls, tooligans, ballImage, wallImage]
+    [
+      level.number,
+      canvas.height,
+      canvas.width,
+      scored,
+      failed,
+      level.walls,
+      tooligans,
+      ballImage,
+      wallImage,
+    ]
   )
 
   useEffect(() => {

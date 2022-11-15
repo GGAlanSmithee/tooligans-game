@@ -13,10 +13,12 @@ export interface Wall extends Pos {
 
 export interface Level {
   walls: Wall[]
+  number: number 
 }
 
 export const defaultLevel: Level = {
   walls: [],
+  number: 1,
 }
 
 export const ballDimensions = {
@@ -38,7 +40,7 @@ export const tooliganDimensions = {
   playerHeight: 100,
 }
 
-export const levels: Dictionary<Level> = {
+export const levels: Dictionary<Omit<Level, "number">> = {
   "2": {
     walls: [{ x: 435, y: 475, count: 3 }],
   },
