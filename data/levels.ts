@@ -7,6 +7,7 @@ export interface Pos {
 
 export interface Wall extends Pos {
   count: number
+  moving?: boolean
 }
 
 export interface Level {
@@ -15,6 +16,11 @@ export interface Level {
 
 export const defaultLevel: Level = {
   walls: [],
+}
+
+export const ballDimensions = {
+  width: 40,
+  height: 40,
 }
 
 export const wallPlayerDimensions = {
@@ -37,9 +43,11 @@ export const levels: Dictionary<Level> = {
   },
   "3": {
     walls: [
-      { x: 580, y: 525, count: 2 },
-      { x: 100, y: 475, count: 2 },
-      { x: 600, y: 325, count: 2 },
+      { x: 435, y: 475, count: 3 },
+      // { x: 100, y: 475, count: 2 },
+      { x: 635, y: 375, count: 2 },
+      { x: 285, y: 675, count: 2 },
     ],
+
   },
 }

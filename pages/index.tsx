@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from "react"
 import styles from "../styles/index.module.css"
 
 const Index = () => {
-  const [level, setLevel] = useState(1)
+  const [level, setLevel] = useState(3)
 
   const levelData = useMemo(() => levels[level] || defaultLevel, [level])
 

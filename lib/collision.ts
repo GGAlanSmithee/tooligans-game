@@ -1,4 +1,4 @@
-import { Pos, Wall, wallPlayerDimensions } from "data/levels"
+import { ballDimensions, Pos, Wall, wallPlayerDimensions } from "data/levels"
 
 export type Circle = {
   x: number
@@ -6,15 +6,16 @@ export type Circle = {
   radius: number
 }
 
+const { width: bW, height: bH } = ballDimensions
 const { width: wW, height: wH } = wallPlayerDimensions
 
-export const collidesWithWall = (walls: Wall[], { x: pX, y: pY }: Pos) => {
+export const collidesWithWall = (walls: Wall[], { x: bX, y: bY }: Pos, radius: number) => {
   for (const wall of walls)
     for (let i = 0; i < wall.count; i++) {
       const wX = wall.x + i * wW
       const wY = wall.y
 
-      if (pX + wW > wX && pX < wX + wW && pY + wH > wY && pY < wY + wH) return true
+      if (bX + bW > wX && bX < wX + wW && bY + bH > wY && bY < wY + wH) return true
     }
 
   return false
