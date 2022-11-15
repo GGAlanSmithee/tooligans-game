@@ -7,11 +7,18 @@ import styles from "../styles/index.module.css"
 interface Props {
   level: number
   tooligans: Tooligan[]
+  setTooligans: (tooligans: Tooligan[]) => void
   selected?: string
   setSelected: (selected?: string) => void
 }
 
-export const LevelInstructions = ({ level, tooligans, selected, setSelected }: Props) => {
+export const LevelInstructions = ({
+  level,
+  tooligans,
+  setTooligans,
+  selected,
+  setSelected,
+}: Props) => {
   return (
     <>
       <h2>Instructions</h2>
@@ -50,10 +57,26 @@ export const LevelInstructions = ({ level, tooligans, selected, setSelected }: P
                     {name}
                   </label>
 
-                  {isPlaced && <small className={styles.tooligansResetButton} onClick={() => {
-                    tooligan.pos.x = tooligan.originalPos.x
-                    tooligan.pos.y = tooligan.originalPos.y
-                  }}>⭯</small>}
+                  {isPlaced && (
+                    <small
+                      className={styles.tooligansResetButton}
+                      onClick={() => {
+                        setTooligans(
+                          tooligans.map((t) => {
+                            if (t.asset.onchain_metadata?.name === name)
+                              return {
+                                ...t,
+                                pos: t.originalPos,
+                              }
+
+                            return t
+                          })
+                        )
+                      }}
+                    >
+                      ⭯
+                    </small>
+                  )}
                 </li>
               )
             })}

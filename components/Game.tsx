@@ -8,7 +8,7 @@ import { drawBall } from "lib/draw-ball"
 import { drawTooligans } from "lib/draw-tooligans"
 import { drawWall } from "lib/draw-wall"
 import { easeBetweenPoints } from "lib/ease-between-points"
-import { isEqual } from "lodash"
+import { isEqual, sortBy } from "lodash"
 import { useCallback, useEffect, useState } from "react"
 
 type TravelFunction = ReturnType<typeof easeBetweenPoints>
@@ -35,6 +35,7 @@ interface Props {
   canvas: UseCanvas
   ballImage: HTMLImageElement | null
   tooligans: Tooligan[]
+  setTooligans: (tooligans: Tooligan[]) => void
   onLevelCompleted: () => void
   selectedTooligan?: string
 }
@@ -44,6 +45,7 @@ const Game = ({
   canvas,
   ballImage,
   tooligans,
+  setTooligans,
   onLevelCompleted,
   selectedTooligan,
 }: Props) => {
@@ -59,7 +61,10 @@ const Game = ({
       if (!game) return
 
       if (e.key === " ") {
-        const players = tooligans.filter((t) => !isEqual(t.pos, t.originalPos))
+        const players = sortBy(
+          tooligans.filter((t) => !isEqual(t.pos, t.originalPos)),
+          "order"
+        )
 
         if (scored) {
           onLevelCompleted()
@@ -107,10 +112,24 @@ const Game = ({
       const rect = el.getBoundingClientRect()
 
       const tooligan = tooligans.find((t) => t.asset.onchain_metadata?.name === selectedTooligan)
+      const playersCount = tooligans.filter((t) => !isEqual(t.pos, t.originalPos)).length
 
       if (tooligan) {
-        tooligan.pos.x = e.clientX - rect.left - 75
-        tooligan.pos.y = e.clientY - rect.top - 75
+        setTooligans(
+          tooligans.map((t) => {
+            if (t.asset.onchain_metadata?.name === tooligan.asset.onchain_metadata?.name)
+              return {
+                ...t,
+                order: playersCount + 1,
+                pos: {
+                  x: e.clientX - rect.left - 75,
+                  y: e.clientY - rect.top - 75,
+                },
+              }
+
+            return t
+          })
+        )
       }
     }
 
@@ -120,7 +139,17 @@ const Game = ({
       document.removeEventListener("keyup", handleKeyUp)
       el?.removeEventListener("click", handleClick)
     }
-  }, [canvas, tooligans, scored, setScored, failed, setFailed, onLevelCompleted, selectedTooligan])
+  }, [
+    canvas,
+    tooligans,
+    setTooligans,
+    scored,
+    setScored,
+    failed,
+    setFailed,
+    onLevelCompleted,
+    selectedTooligan,
+  ])
 
   const update = useCallback(
     (dt: number) => {

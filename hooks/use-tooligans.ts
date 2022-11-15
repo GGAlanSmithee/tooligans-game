@@ -1,6 +1,6 @@
 import { Image } from "lib/async-image-loading"
 import { Lucid } from "lucid-cardano"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { Responses } from "@blockfrost/blockfrost-js"
 
@@ -9,6 +9,7 @@ import { useTooligansAssets } from "./use-tooligans-assets"
 import { useTooligansImages } from "./use-tooligans-images"
 
 export interface Tooligan {
+  order?: number
   originalPos: { x: number; y: number }
   pos: { x: number; y: number }
   asset: Responses["asset"]
@@ -19,6 +20,8 @@ export const useTooligans = (lucid?: Lucid, networkId?: number) => {
   const tooligansAssets = useTooligansAssets(lucid, networkId)
   const tooligansImages = useTooligansImages(tooligansAssets)
 
+  const [tooligans, setTooligans] = useState<Tooligan[]>([])
+
   const tooligansAssetsAndImages = useMemo(
     () =>
       tooligansAssets.map((asset, i) => ({
@@ -28,8 +31,8 @@ export const useTooligans = (lucid?: Lucid, networkId?: number) => {
     [tooligansAssets, tooligansImages]
   )
 
-  const tooligans = useMemo<Tooligan[]>(
-    () =>
+  useEffect(() => {
+    setTooligans(
       tooligansAssetsAndImages.map((tooligan, i) => {
         const x = (((tooliganDimensions.imageWidth / 3) * i) % 1000) - 10
         const y = -1
@@ -39,9 +42,9 @@ export const useTooligans = (lucid?: Lucid, networkId?: number) => {
           pos: { x, y },
           ...tooligan,
         }
-      }),
-    [tooligansAssetsAndImages]
-  )
+      })
+    )
+  }, [tooligansAssetsAndImages])
 
-  return tooligans
+  return { tooligans, setTooligans }
 }

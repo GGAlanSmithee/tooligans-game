@@ -21,7 +21,7 @@ const Index = () => {
 
   const hasNamiExtension = useHasNamiExtension()
   const { lucid, networkId } = useLucid()
-  const tooligans = useTooligans(lucid, networkId)
+  const { tooligans, setTooligans } = useTooligans(lucid, networkId)
   const [selectedTooligan, setSelectedTooligan] = useState<string>()
 
   useEffect(() => {
@@ -66,6 +66,7 @@ const Index = () => {
           canvas={canvas}
           ballImage={ballImage}
           tooligans={tooligans}
+          setTooligans={setTooligans}
           onLevelCompleted={() => {
             tooligans.forEach((t) => {
               t.pos.x = t.originalPos.x
@@ -81,6 +82,7 @@ const Index = () => {
         <LevelInstructions
           level={level}
           tooligans={tooligans}
+          setTooligans={setTooligans}
           selected={selectedTooligan}
           setSelected={setSelectedTooligan}
         />
