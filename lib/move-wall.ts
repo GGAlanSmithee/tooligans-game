@@ -7,8 +7,6 @@ export const moveWall = (wall: Wall, velocity: number, t: number) => {
 
   wall.x += t * velocity * (wall.direction === "left" ? -1 : 1)
 
-  console.log(wall.x)
-
   if (wall.x < 0) {
     wall.x = 0
     wall.direction = "right"

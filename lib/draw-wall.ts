@@ -4,8 +4,6 @@ import { Image } from "./async-image-loading"
 
 const { width, height } = wallPlayerDimensions
 
-console.log(width, height)
-
 export const drawWall = (ctx: CanvasRenderingContext2D, wall: Wall, img: Image) => {
   if (!img) return
 
