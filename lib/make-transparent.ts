@@ -9,7 +9,7 @@ const makeTransparent = (img: HTMLImageElement): Image => {
   var buffer = document.createElement("canvas")
   var bufferCtx = buffer.getContext("2d")
 
-  if (!bufferCtx) return null
+  if (!img || !bufferCtx) return null
 
   buffer.width = width
   buffer.height = height
