@@ -75,3 +75,8 @@
 .tooligansResetButton {
   float: right;
 }
+
+.levelSelectItem {
+  text-decoration: underline;
+  cursor: pointer;
+}
