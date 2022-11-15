@@ -44,8 +44,8 @@ const Index = () => {
       <div className={styles.container}>
         <div className={styles.left} />
         <div>
-          <h1>
-            This game currently only works with the Nami extension installed. Please install it.
+          <h1 className={styles.namiTitle}>
+            This game currently only works with the Nami extension installed.
           </h1>
         </div>
         <div className={styles.right} />

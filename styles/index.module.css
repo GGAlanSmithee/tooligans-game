@@ -86,3 +86,8 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.namiTitle {
+  text-align: center;
+  margin-top: 4rem;
+}
