@@ -3,9 +3,9 @@ import { LevelInstructions } from "components/LevelInstructions"
 import { LevelSelect } from "components/LevelSelect"
 import { defaultLevel, levels } from "data/levels"
 import { useCanvas } from "hooks/use-canvas"
-import { useHasNamiExtension } from "hooks/use-has-nami-extension"
 import { useImage } from "hooks/use-image"
-import { useLucid } from "hooks/use-lucid"
+import { useHasNamiExtension } from "hooks/use-lucid/use-has-nami-extension"
+import { useLucid } from "hooks/use-lucid/use-lucid"
 import { useTooligans } from "hooks/use-tooligans"
 import { useEffect, useMemo, useState } from "react"
 
@@ -33,7 +33,7 @@ const Index = () => {
 
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
-    return <div>This example only works with the Nami extension installed. Please install it.</div>
+    return <div>This game currently only works with the Nami extension installed. Please install it.</div>
 
   // not initialized yet
   if (!lucid) return null
