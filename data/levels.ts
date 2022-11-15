@@ -22,6 +22,15 @@ export const wallPlayerDimensions = {
   height: 104,
 }
 
+export const tooliganDimensions = {
+  imageWidth: 400, // 1 / 10 of original
+  imageHeight: 400, // 1 / 10 of original
+  audienceWidth: 135,
+  audienceHeight: 135,
+  playerWidth: 100,
+  playerHeight: 100,
+}
+
 export const levels: Dictionary<Level> = {
   "2": {
     walls: [{ x: 435, y: 475, count: 3 }],

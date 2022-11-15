@@ -1,6 +1,9 @@
+import { tooliganDimensions } from "data/levels"
 import { isEqual } from "lodash"
 
 import { Image } from "./async-image-loading"
+
+const { imageHeight: height, imageWidth: width } = tooliganDimensions
 
 const makeTransparent = (img: HTMLImageElement): Image => {
   var buffer = document.createElement("canvas")
@@ -8,9 +11,9 @@ const makeTransparent = (img: HTMLImageElement): Image => {
 
   if (!bufferCtx) return null
 
-  buffer.width = img.width / 10
-  buffer.height = img.height / 10
-  bufferCtx.drawImage(img, 0, 0, img.width / 10, img.height / 10)
+  buffer.width = width
+  buffer.height = height
+  bufferCtx.drawImage(img, 0, 0, width, height)
 
   var imageData = bufferCtx.getImageData(0, 0, buffer.width, buffer.height)
 

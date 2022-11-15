@@ -4,6 +4,7 @@ import { useMemo } from "react"
 
 import { Responses } from "@blockfrost/blockfrost-js"
 
+import { tooliganDimensions } from "../data/levels"
 import { useTooligansAssets } from "./use-tooligans-assets"
 import { useTooligansImages } from "./use-tooligans-images"
 
@@ -30,7 +31,7 @@ export const useTooligans = (lucid?: Lucid, networkId?: number) => {
   const tooligans = useMemo<Tooligan[]>(
     () =>
       tooligansAssetsAndImages.map((tooligan, i) => {
-        const x = ((((tooligan.image?.width || 0) / 3) * i) % 1000) - 10
+        const x = (((tooliganDimensions.imageWidth / 3) * i) % 1000) - 10
         const y = -1
 
         return {

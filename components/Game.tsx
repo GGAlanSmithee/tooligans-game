@@ -1,4 +1,4 @@
-import { Level } from "data/levels"
+import { Level, tooliganDimensions } from "data/levels"
 import createGame, { Game } from "gameloop"
 import { UseCanvas } from "hooks/use-canvas"
 import { useImage } from "hooks/use-image"
@@ -15,6 +15,8 @@ type TravelFunction = ReturnType<typeof easeBetweenPoints>
 
 let ballPath: TravelFunction[] = []
 let game: Game | null = null
+
+const { playerWidth, playerHeight } = tooliganDimensions
 
 const targetPos = {
   x: 477.5,
@@ -72,10 +74,18 @@ const Game = ({
           ballPath = []
 
           for (let i = 0; i < players.length; i++) {
-            const startPos = i === 0 ? ballStartPos : players[i - 1].pos
+            const startPos =
+              i === 0
+                ? ballStartPos
+                : {
+                    x: players[i - 1].pos.x + playerWidth / 3,
+                    y: players[i - 1].pos.y + playerHeight / 3,
+                  }
 
-            const player = players[i]
-            const targetPos = player.pos
+            const targetPos = {
+              x: players[i].pos.x + playerWidth / 3,
+              y: players[i].pos.y + playerHeight / 3,
+            }
 
             ballPath.push(easeBetweenPoints(3, startPos, targetPos))
           }
