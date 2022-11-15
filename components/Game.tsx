@@ -7,11 +7,12 @@ import { collidesWithWall } from "lib/collision"
 import { drawBall } from "lib/draw-ball"
 import { drawTooligans } from "lib/draw-tooligans"
 import { drawWall } from "lib/draw-wall"
-import { easeBetweenPoints } from "lib/ease-between-points"
+import { moveBetweenPoints } from "lib/move-between-points"
+import { moveWall } from "lib/move-wall"
 import { isEqual, sortBy } from "lodash"
 import { useCallback, useEffect, useState } from "react"
 
-type TravelFunction = ReturnType<typeof easeBetweenPoints>
+type TravelFunction = ReturnType<typeof moveBetweenPoints>
 
 let ballPath: TravelFunction[] = []
 let game: Game | null = null
@@ -92,12 +93,12 @@ const Game = ({
               y: players[i].pos.y + playerHeight / 3,
             }
 
-            ballPath.push(easeBetweenPoints(3, startPos, targetPos))
+            ballPath.push(moveBetweenPoints(3, startPos, targetPos))
           }
 
-          ballPath.push(easeBetweenPoints(3, players[players.length - 1].pos, { ...targetPos }))
+          ballPath.push(moveBetweenPoints(3, players[players.length - 1].pos, { ...targetPos }))
         } else {
-          ballPath = [easeBetweenPoints(3, { ...ballPos }, { ...targetPos })]
+          ballPath = [moveBetweenPoints(3, { ...ballPos }, { ...targetPos })]
         }
       }
     }
@@ -153,6 +154,8 @@ const Game = ({
 
   const update = useCallback(
     (dt: number) => {
+      if (!scored && !failed) for (const wall of level.walls) moveWall(wall, 350, dt)
+
       if (ballPath.length <= 0) return
 
       const {
@@ -180,7 +183,7 @@ const Game = ({
         setFailed(true)
       }
     },
-    [setScored, setFailed, level.walls]
+    [setScored, setFailed, level.walls, scored, failed]
   )
 
   const draw = useCallback(

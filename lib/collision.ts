@@ -9,7 +9,7 @@ export type Circle = {
 const { width: bW, height: bH } = ballDimensions
 const { width: wW, height: wH } = wallPlayerDimensions
 
-export const collidesWithWall = (walls: Wall[], { x: bX, y: bY }: Pos, radius: number) => {
+export const collidesWithWall = (walls: Wall[], { x: bX, y: bY }: Pos) => {
   for (const wall of walls)
     for (let i = 0; i < wall.count; i++) {
       const wX = wall.x + i * wW

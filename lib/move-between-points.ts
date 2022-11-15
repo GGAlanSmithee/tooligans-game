@@ -3,8 +3,7 @@ interface Pos {
   y: number
 }
 
-export function easeBetweenPoints(velocity: number, p1: Pos, p2: Pos) {
-  // create a function that takes a number between 0 and 1
+export function moveBetweenPoints(velocity: number, p1: Pos, p2: Pos) {
   let i = 0
   const pos = { ...p1 }
 
@@ -21,5 +20,3 @@ export function easeBetweenPoints(velocity: number, p1: Pos, p2: Pos) {
     }
   }
 }
-
-// create a function that moves a point between two points
