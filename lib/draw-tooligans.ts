@@ -14,7 +14,7 @@ export const drawTooligans = (ctx: CanvasRenderingContext2D, tooligans: Tooligan
         ctx.fillStyle = "black"
         ctx.font = "20px Arial"
         ctx.lineWidth = 1
-        ctx.fillText(order.toString(), x - 20, y)
+        ctx.fillText(order.toString(), x - 10, y + 20)
       }
     } else {
       ctx.drawImage(image, x, y, audienceWidth, audienceHeight)

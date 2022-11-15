@@ -53,6 +53,9 @@ export const levels: Dictionary<Level> = {
     walls: [
       { x: 435, y: 475, count: 3, moving: true, direction: "left" },
       { x: 435, y: 275, count: 3, moving: true, direction: "right" },
+      { x: 235, y: 600, count: 3 },
+      { x: 435, y: 600, count: 3 },
+      { x: 635, y: 600, count: 3 },
     ],
   },
 }
