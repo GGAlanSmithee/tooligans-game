@@ -33,7 +33,11 @@ const Index = () => {
 
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
-    return <div>This game currently only works with the Nami extension installed. Please install it.</div>
+    return (
+      <div>
+        This game currently only works with the Nami extension installed. Please install it.
+      </div>
+    )
 
   // not initialized yet
   if (!lucid) return null
@@ -68,7 +72,12 @@ const Index = () => {
 
       <div className={styles.container}>
         <aside className={styles.left}>
-          <LevelSelect level={level} setLevel={setLevel} />
+          <LevelSelect
+            level={level}
+            setLevel={setLevel}
+            tooligans={tooligans}
+            setTooligans={setTooligans}
+          />
         </aside>
 
         <div>

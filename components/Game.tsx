@@ -121,7 +121,7 @@ const Game = ({
             if (t.asset.onchain_metadata?.name === tooligan.asset.onchain_metadata?.name)
               return {
                 ...t,
-                order: playersCount + 1,
+                order: t.order || playersCount + 1,
                 pos: {
                   x: e.clientX - rect.left - 75,
                   y: e.clientY - rect.top - 75,
