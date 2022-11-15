@@ -93,10 +93,13 @@ const Index = () => {
             tooligans={tooligans}
             setTooligans={setTooligans}
             onLevelCompleted={() => {
-              tooligans.forEach((t) => {
-                t.pos.x = t.originalPos.x
-                t.pos.y = t.originalPos.y
-              })
+              setTooligans(
+                tooligans.map((t) => ({
+                  ...t,
+                  order: undefined,
+                  pos: t.originalPos,
+                }))
+              )
               setLevel((lastLevel) => lastLevel + 1)
             }}
             selectedTooligan={selectedTooligan}
