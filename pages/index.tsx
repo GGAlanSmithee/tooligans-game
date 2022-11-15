@@ -51,43 +51,59 @@ const Index = () => {
     )
 
   return (
-    <div className={styles.container}>
-      <aside className={styles.left}>
-        <LevelSelect level={level} setLevel={setLevel} />
-      </aside>
+    <>
+      <a href="https://github.com/GGAlanSmithee/tooligans-game">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          decoding="async"
+          loading="lazy"
+          width="149"
+          height="149"
+          src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149"
+          className={styles.forkMe}
+          alt="Fork me on GitHub"
+          data-recalc-dims="1"
+        />
+      </a>
 
-      <div>
-        <div className={styles.header}>
-          <h1>TooliGames</h1>
+      <div className={styles.container}>
+        <aside className={styles.left}>
+          <LevelSelect level={level} setLevel={setLevel} />
+        </aside>
+
+        <div>
+          <div className={styles.header}>
+            <h1>TooliGames</h1>
+          </div>
+
+          <Game
+            level={levelData}
+            canvas={canvas}
+            ballImage={ballImage}
+            tooligans={tooligans}
+            setTooligans={setTooligans}
+            onLevelCompleted={() => {
+              tooligans.forEach((t) => {
+                t.pos.x = t.originalPos.x
+                t.pos.y = t.originalPos.y
+              })
+              setLevel((lastLevel) => lastLevel + 1)
+            }}
+            selectedTooligan={selectedTooligan}
+          />
         </div>
 
-        <Game
-          level={levelData}
-          canvas={canvas}
-          ballImage={ballImage}
-          tooligans={tooligans}
-          setTooligans={setTooligans}
-          onLevelCompleted={() => {
-            tooligans.forEach((t) => {
-              t.pos.x = t.originalPos.x
-              t.pos.y = t.originalPos.y
-            })
-            setLevel((lastLevel) => lastLevel + 1)
-          }}
-          selectedTooligan={selectedTooligan}
-        />
+        <aside className={styles.right}>
+          <LevelInstructions
+            level={level}
+            tooligans={tooligans}
+            setTooligans={setTooligans}
+            selected={selectedTooligan}
+            setSelected={setSelectedTooligan}
+          />
+        </aside>
       </div>
-
-      <aside className={styles.right}>
-        <LevelInstructions
-          level={level}
-          tooligans={tooligans}
-          setTooligans={setTooligans}
-          selected={selectedTooligan}
-          setSelected={setSelectedTooligan}
-        />
-      </aside>
-    </div>
+    </>
   )
 }
 
