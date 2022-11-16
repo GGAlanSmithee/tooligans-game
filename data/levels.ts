@@ -40,6 +40,10 @@ export const tooliganDimensions = {
   playerHeight: 100,
 }
 
+const wW = wallPlayerDimensions.width
+const wH = wallPlayerDimensions.height
+const cO = wallPlayerDimensions.width / 2
+
 export const levels: Dictionary<Omit<Level, "number">> = {
   "2": {
     walls: [{ x: 435, y: 475, count: 3 }],
@@ -77,5 +81,55 @@ export const levels: Dictionary<Omit<Level, "number">> = {
         direction: i % 2 === 0 ? "right" : ("left" as "left" | "right"),
       })),
     ],
+  },
+  // Pay homage
+  "6": {
+    walls: [
+      // C
+      { x: wW, y: wH * 6, count: 1 },
+      { x: wW, y: wH * 5, count: 1 },
+      { x: wW, y: wH * 4, count: 1 },
+      { x: wW * 2, y: wH * 3.5, count: 1 },
+      { x: wW * 3, y: wH * 3.5, count: 1 },
+      { x: wW * 4, y: wH * 4, count: 1 },
+      { x: wW * 2, y: wH * 6.5, count: 1 },
+      { x: wW * 3, y: wH * 6.5, count: 1 },
+      { x: wW * 2, y: wH * 3.5, count: 1 },
+      { x: wW * 4, y: wH * 6, count: 1 },
+
+      // N
+      { x: wW * 6, y: wH * 3.5, count: 1 },
+      { x: wW * 6, y: wH * 4.5, count: 1 },
+      { x: wW * 6, y: wH * 5.5, count: 1 },
+      { x: wW * 6, y: wH * 6.5, count: 1 },
+      { x: wW * 7, y: wH * 4, count: 1 },
+      { x: wW * 8, y: wH * 5, count: 1 },
+      { x: wW * 9, y: wH * 6, count: 1 },
+      { x: wW * 10, y: wH * 6.5, count: 1 },
+      { x: wW * 10, y: wH * 5.5, count: 1 },
+      { x: wW * 10, y: wH * 4.5, count: 1 },
+      { x: wW * 10, y: wH * 3.5, count: 1 },
+
+      // F
+      { x: cO * 2 + wW * 12, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 12, y: wH * 4.5, count: 1 },
+      { x: cO * 2 + wW * 12, y: wH * 5.5, count: 1 },
+      { x: cO * 2 + wW * 12, y: wH * 6.5, count: 1 },
+      { x: cO * 2 + wW * 13, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 14, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 15, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 13, y: wH * 5, count: 1 },
+      { x: cO * 2 + wW * 14, y: wH * 5, count: 1 },
+
+      // T
+      { x: cO * 2 + wW * 17, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 18, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 19, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 20, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 21, y: wH * 3.5, count: 1 },
+      { x: cO * 2 + wW * 19, y: wH * 4.5, count: 1 },
+      { x: cO * 2 + wW * 19, y: wH * 5.5, count: 1 },
+      { x: cO * 2 + wW * 19, y: wH * 6.5, count: 1 },
+    ].map((wall) => ({ ...wall, x: wall.x + cO })),
   },
 }
