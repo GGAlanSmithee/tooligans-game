@@ -169,7 +169,7 @@ const Game = ({
       const xDiff = ballPos.x - target.x
       const yDiff = ballPos.y - target.y
 
-      if (Math.abs(xDiff) < 1 && Math.abs(yDiff) < 1) {
+      if (Math.abs(xDiff) < 0.1 && Math.abs(yDiff) < 0.1) {
         ballPath.shift()
 
         if (ballPath.length === 0) {

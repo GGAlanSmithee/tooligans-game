@@ -13,7 +13,7 @@ export interface Wall extends Pos {
 
 export interface Level {
   walls: Wall[]
-  number: number 
+  number: number
 }
 
 export const defaultLevel: Level = {
@@ -58,6 +58,24 @@ export const levels: Dictionary<Omit<Level, "number">> = {
       { x: 235, y: 600, count: 3 },
       { x: 435, y: 600, count: 3 },
       { x: 635, y: 600, count: 3 },
+    ],
+  },
+  "5": {
+    walls: [
+      ...Array.from({ length: 1000 / wallPlayerDimensions.width / 4 }, (_, i) => ({
+        x: i * wallPlayerDimensions.width * 4,
+        y: 600,
+        count: 1,
+        moving: true,
+        direction: i % 2 === 0 ? "left" : ("right" as "left" | "right"),
+      })),
+      ...Array.from({ length: 1000 / wallPlayerDimensions.width / 4 }, (_, i) => ({
+        x: i * wallPlayerDimensions.width * 4 + wallPlayerDimensions.width * 2,
+        y: 400,
+        count: 1,
+        moving: true,
+        direction: i % 2 === 0 ? "right" : ("left" as "left" | "right"),
+      })),
     ],
   },
 }
