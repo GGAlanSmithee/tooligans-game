@@ -1,7 +1,7 @@
 import { tooliganDimensions } from "../data/levels"
 import { Tooligan } from "../hooks/use-tooligans"
 
-const { audienceHeight, audienceWidth, playerWidth, playerHeight } = tooliganDimensions
+const { width, height } = tooliganDimensions
 
 export const drawTooligans = (
   ctx: CanvasRenderingContext2D,
@@ -18,17 +18,13 @@ export const drawTooligans = (
   tooligans.forEach(({ order, image, pos: { x, y } }) => {
     if (!image) return
 
-    if (y > 30) {
-      ctx.drawImage(image, x, y, playerWidth, playerHeight)
+    ctx.drawImage(image, x, y, width, height)
 
-      if (order) {
-        ctx.fillStyle = "black"
-        ctx.font = "20px Arial"
-        ctx.lineWidth = 1
-        ctx.fillText(order.toString(), x - 10, y + 20)
-      }
-    } else {
-      ctx.drawImage(image, x, y, audienceWidth, audienceHeight)
+    if (order) {
+      ctx.fillStyle = "black"
+      ctx.font = "20px Arial"
+      ctx.lineWidth = 1
+      ctx.fillText(order.toString(), x - 10, y + 20)
     }
   })
 }

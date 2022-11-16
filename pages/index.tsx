@@ -31,13 +31,6 @@ const Index = () => {
   const { tooligans, setTooligans } = useTooligans(lucid, networkId)
   const [selectedTooligan, setSelectedTooligan] = useState<string>()
 
-  useEffect(() => {
-    if (level > 1 && selectedTooligan === undefined && tooligans.length > 0) {
-      const name = tooligans[0].asset.onchain_metadata?.name
-      if (name) setSelectedTooligan(name)
-    }
-  }, [level, selectedTooligan, tooligans])
-
   // strict equals to avoid undefined
   if (hasNamiExtension === false)
     return (
@@ -92,6 +85,7 @@ const Index = () => {
             ballImage={ballImage}
             tooligans={tooligans}
             setTooligans={setTooligans}
+            setSelectedTooligan={setSelectedTooligan}
             onLevelCompleted={() => {
               setTooligans(
                 tooligans.map((t) => ({
@@ -109,10 +103,6 @@ const Index = () => {
         <aside className={styles.right}>
           <LevelInstructions
             level={level}
-            tooligans={tooligans}
-            setTooligans={setTooligans}
-            selected={selectedTooligan}
-            setSelected={setSelectedTooligan}
           />
         </aside>
       </div>

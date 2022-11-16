@@ -17,7 +17,7 @@ type TravelFunction = ReturnType<typeof moveBetweenPoints>
 let ballPath: TravelFunction[] = []
 let game: Game | null = null
 
-const { playerWidth, playerHeight } = tooliganDimensions
+const { width: tooliganWidth, height: tooliganHeight } = tooliganDimensions
 
 const targetPos = {
   x: 477.5,
@@ -39,7 +39,10 @@ interface Props {
   setTooligans: (tooligans: Tooligan[]) => void
   onLevelCompleted: () => void
   selectedTooligan?: string
+  setSelectedTooligan: (tooligan?: string) => void
 }
+
+const mousePos = { x: 0, y: 0 }
 
 const Game = ({
   level,
@@ -49,6 +52,7 @@ const Game = ({
   setTooligans,
   onLevelCompleted,
   selectedTooligan,
+  setSelectedTooligan,
 }: Props) => {
   const [scored, setScored] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -62,6 +66,8 @@ const Game = ({
       if (!game) return
 
       if (e.key === " ") {
+        if (selectedTooligan !== undefined) return
+
         const players = sortBy(
           tooligans.filter((t) => !isEqual(t.pos, t.originalPos)),
           "order"
@@ -84,13 +90,13 @@ const Game = ({
               i === 0
                 ? ballStartPos
                 : {
-                    x: players[i - 1].pos.x + playerWidth / 3,
-                    y: players[i - 1].pos.y + playerHeight / 3,
+                    x: players[i - 1].pos.x + tooliganWidth / 3,
+                    y: players[i - 1].pos.y + tooliganHeight / 3,
                   }
 
             const targetPos = {
-              x: players[i].pos.x + playerWidth / 3,
-              y: players[i].pos.y + playerHeight / 3,
+              x: players[i].pos.x + tooliganWidth / 3,
+              y: players[i].pos.y + tooliganHeight / 3,
             }
 
             ballPath.push(moveBetweenPoints(3, startPos, targetPos))
@@ -105,40 +111,80 @@ const Game = ({
 
     document.addEventListener("keyup", handleKeyUp)
 
-    const handleClick = (e: MouseEvent) => {
+    const handleMouseDown = (e: MouseEvent) => {
       if (!el || !game) return
-
       if (scored || failed) return
 
       const rect = el.getBoundingClientRect()
+      const x = e.clientX - rect.left // - 75
+      const y = e.clientY - rect.top // - 75
 
-      const tooligan = tooligans.find((t) => t.asset.onchain_metadata?.name === selectedTooligan)
-      const playersCount = tooligans.filter((t) => !isEqual(t.pos, t.originalPos)).length
+      const tooligan = [...tooligans].reverse().find((t: Tooligan) => {
+        const w = y > 30 ? tooliganWidth : tooliganWidth
+        const h = y > 30 ? tooliganHeight : tooliganHeight
 
-      if (tooligan) {
-        setTooligans(
-          tooligans.map((t) => {
-            if (t.asset.onchain_metadata?.name === tooligan.asset.onchain_metadata?.name)
-              return {
-                ...t,
-                order: t.order || playersCount + 1,
-                pos: {
-                  x: e.clientX - rect.left - 75,
-                  y: e.clientY - rect.top - 75,
-                },
-              }
+        return x > t.pos.x && x < t.pos.x + w && y > t.pos.y && y < t.pos.y + h
+      })
 
-            return t
-          })
-        )
-      }
+      if (tooligan) setSelectedTooligan(tooligan.asset.onchain_metadata?.name)
     }
 
-    el?.addEventListener("click", handleClick)
+    const handleMouseUp = (e: MouseEvent) => {
+      if (!el || !game) return
+
+      const tooligan = tooligans.find(
+        (t: Tooligan) => t.asset.onchain_metadata?.name === selectedTooligan
+      )
+
+      if (!tooligan) return
+
+      const rect = el.getBoundingClientRect()
+
+      const x = e.clientX - rect.left - 75
+      const y = e.clientY - rect.top - 75
+
+      const isAudience = y <= 30 + 75
+
+      setTooligans(
+        tooligans.map((t) =>
+          t.asset.onchain_metadata?.name === tooligan.asset.onchain_metadata?.name
+            ? {
+                ...t,
+                order: tooligan.order || Math.max(...tooligans.map((t) => t.order || 0)) + 1,
+                pos: {
+                  x: isAudience ? tooligan.originalPos.x : x,
+                  y: isAudience ? tooligan.originalPos.y : y,
+                },
+              }
+            : t
+        )
+      )
+
+      setSelectedTooligan(undefined)
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!el || !game) return
+      if (selectedTooligan === undefined) return
+
+      const rect = el.getBoundingClientRect()
+
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      mousePos.x = x
+      mousePos.y = y
+    }
+
+    el?.addEventListener("mousedown", handleMouseDown)
+    el?.addEventListener("mouseup", handleMouseUp)
+    el?.addEventListener("mousemove", handleMouseMove, { passive: true })
 
     return () => {
       document.removeEventListener("keyup", handleKeyUp)
-      el?.removeEventListener("click", handleClick)
+      el?.removeEventListener("mousedown", handleMouseDown)
+      el?.removeEventListener("mouseup", handleMouseUp)
+      el?.removeEventListener("mousemove", handleMouseMove)
     }
   }, [
     canvas,
@@ -150,6 +196,7 @@ const Game = ({
     setFailed,
     onLevelCompleted,
     selectedTooligan,
+    setSelectedTooligan,
   ])
 
   const update = useCallback(
@@ -190,7 +237,22 @@ const Game = ({
     (ctx: CanvasRenderingContext2D) => {
       for (const wall of level.walls) drawWall(ctx, wall, wallImage)
 
-      drawTooligans(ctx, tooligans, level.number)
+      drawTooligans(
+        ctx,
+        tooligans.map((t) => {
+          if (t.asset.onchain_metadata?.name === selectedTooligan)
+            return {
+              ...t,
+              pos: {
+                x: mousePos.x - 75,
+                y: mousePos.y - 75,
+              },
+            }
+
+          return t
+        }),
+        level.number
+      )
 
       drawBall(ctx, ballImage, ballPos)
 
@@ -227,6 +289,7 @@ const Game = ({
       tooligans,
       ballImage,
       wallImage,
+      selectedTooligan,
     ]
   )
 

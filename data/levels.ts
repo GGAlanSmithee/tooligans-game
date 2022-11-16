@@ -34,10 +34,8 @@ export const wallPlayerDimensions = {
 export const tooliganDimensions = {
   imageWidth: 400, // 1 / 10 of original
   imageHeight: 400, // 1 / 10 of original
-  audienceWidth: 135,
-  audienceHeight: 135,
-  playerWidth: 100,
-  playerHeight: 100,
+  width: 135,
+  height: 135,
 }
 
 const wW = wallPlayerDimensions.width
