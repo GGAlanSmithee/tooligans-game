@@ -1,4 +1,4 @@
-* { margin:0; padding:0; } /* to remove the top and left whitespace */
+* { margin:0; padding:0; user-select: none; } /* to remove the top and left whitespace */
 
 html,
 body,
