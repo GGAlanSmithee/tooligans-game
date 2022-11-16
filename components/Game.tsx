@@ -116,8 +116,8 @@ const Game = ({
       if (scored || failed) return
 
       const rect = el.getBoundingClientRect()
-      const x = e.clientX - rect.left // - 75
-      const y = e.clientY - rect.top // - 75
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
 
       const tooligan = [...tooligans].reverse().find((t: Tooligan) => {
         const w = y > 30 ? tooliganWidth : tooliganWidth
@@ -140,10 +140,10 @@ const Game = ({
 
       const rect = el.getBoundingClientRect()
 
-      const x = e.clientX - rect.left - 75
-      const y = e.clientY - rect.top - 75
+      const x = e.clientX - rect.left - tooliganWidth / 2
+      const y = e.clientY - rect.top - tooliganHeight / 2
 
-      const isAudience = y <= 30 + 75
+      const isAudience = y <= 30 + tooliganHeight / 2
 
       setTooligans(
         tooligans.map((t) =>
@@ -244,8 +244,8 @@ const Game = ({
             return {
               ...t,
               pos: {
-                x: mousePos.x - 75,
-                y: mousePos.y - 75,
+                x: mousePos.x - tooliganWidth / 2,
+                y: mousePos.y - tooliganHeight / 2,
               },
             }
 
