@@ -150,7 +150,9 @@ const Game = ({
           t.asset.onchain_metadata?.name === tooligan.asset.onchain_metadata?.name
             ? {
                 ...t,
-                order: tooligan.order || Math.max(...tooligans.map((t) => t.order || 0)) + 1,
+                order: isAudience
+                  ? undefined
+                  : tooligan.order || Math.max(...tooligans.map((t) => t.order || 0)) + 1,
                 pos: {
                   x: isAudience ? tooligan.originalPos.x : x,
                   y: isAudience ? tooligan.originalPos.y : y,
