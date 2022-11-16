@@ -35,7 +35,7 @@ export const useTooligans = (lucid?: Lucid, networkId?: number) => {
     setTooligans(
       tooligansAssetsAndImages.map((tooligan, i) => {
         const x = (((tooliganDimensions.imageWidth / 3) * i) % 1000) - 10
-        const y = -1
+        const y = -3
 
         return {
           originalPos: { x, y },
