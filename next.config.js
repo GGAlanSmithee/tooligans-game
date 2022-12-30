@@ -11,6 +11,13 @@ const nextConfig = {
 
     return config
   },
+  // NOTE: Avoid CORS problems with IPFS
+  rewrites: async () => [
+    {
+      source: "/tooligan-image/:path*",
+      destination: "https://ipfs.blockfrost.dev/ipfs/:path*",
+    },
+  ],
 }
 
 module.exports = nextConfig

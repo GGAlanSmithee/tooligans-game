@@ -1,6 +1,7 @@
-import { sortBy } from "lodash"
+import { isNil, sortBy } from "lodash"
 import { fromUnit, Lucid } from "lucid-cardano"
 import { useCallback, useEffect, useState } from "react"
+import { utility } from "use-cardano"
 
 import { Responses } from "@blockfrost/blockfrost-js"
 
@@ -17,7 +18,7 @@ const useTooligansAssets = (lucid?: Lucid, networkId?: number): Responses["asset
   const [tooligansAssets, setTooligansAssets] = useState<Responses["asset"][]>([])
 
   const fetchTooligans = useCallback(async () => {
-    if (!lucid?.wallet) return
+    if (!lucid?.wallet || isNil(networkId)) return
 
     const utxos = await lucid.wallet.getUtxos()
 
@@ -39,9 +40,9 @@ const useTooligansAssets = (lucid?: Lucid, networkId?: number): Responses["asset
 
     const assetsWithMetadata: Responses["asset"][] = await Promise.all(
       utxoAssets.map((a) =>
-        fetch(`/api/blockfrost/${networkId}/assets/${a.fullyQualifiedAssetName}`).then((r) =>
-          r.json()
-        )
+        fetch(
+          `/api/blockfrost/${utility.toNetworkName(networkId)}/assets/${a.fullyQualifiedAssetName}`
+        ).then((r) => r.json())
       )
     )
 

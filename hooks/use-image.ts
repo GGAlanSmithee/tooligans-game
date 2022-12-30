@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 const useImage = (src?: string) => {
   const [loaded, setLoaded] = useState(false)
@@ -8,7 +8,6 @@ const useImage = (src?: string) => {
     if (!src) return
 
     var loadedImage = new Image()
-    loadedImage.crossOrigin = "Anonymous"
 
     loadedImage.onload = function () {
       setImage(this as HTMLImageElement)

@@ -91,3 +91,9 @@
   text-align: center;
   margin-top: 4rem;
 }
+
+.connectContainer {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+}

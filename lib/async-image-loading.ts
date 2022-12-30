@@ -8,7 +8,6 @@ const asyncImageLoading = (src?: string, onLoad?: OnLoad): Promise<Image> =>
       if (!src) return resolve(null)
 
       const image = new Image()
-      image.crossOrigin = "Anonymous"
 
       image.onload = function () {
         if (onLoad) {

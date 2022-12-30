@@ -8,6 +8,8 @@ const useTooligansImages = (tooligansAssets: Responses["asset"][]): Image[] => {
   const [loaded, setLoaded] = useState(false)
   const [tooligansImages, setTooligansImages] = useState<Image[]>([])
 
+  console.log(tooligansAssets)
+
   useEffect(() => {
     if (loaded || tooligansAssets.length <= 0) return
 
@@ -16,9 +18,7 @@ const useTooligansImages = (tooligansAssets: Responses["asset"][]): Image[] => {
     Promise.all(
       tooligansAssets.map((tooligan) =>
         asyncImageLoading(
-          tooligan?.onchain_metadata?.image
-            ?.toString()
-            ?.replace("ipfs://", "https://ipfs.blockfrost.dev/ipfs/"),
+          tooligan?.onchain_metadata?.image?.toString()?.replace("ipfs://", "/tooligan-image/"),
           makeTransparent
         )
       )

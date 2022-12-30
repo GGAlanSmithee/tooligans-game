@@ -4,10 +4,9 @@ import { LevelSelect } from "components/LevelSelect"
 import { defaultLevel, levels } from "data/levels"
 import { useCanvas } from "hooks/use-canvas"
 import { useImage } from "hooks/use-image"
-import { useHasNamiExtension } from "hooks/use-lucid/use-has-nami-extension"
-import { useLucid } from "hooks/use-lucid/use-lucid"
 import { useTooligans } from "hooks/use-tooligans"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
+import { CardanoWalletSelector, useCardano } from "use-cardano"
 
 import styles from "../styles/index.module.css"
 
@@ -26,30 +25,18 @@ const Index = () => {
   const canvas = useCanvas()
   const { image: ballImage } = useImage("/images/soccer-ball.png")
 
-  const hasNamiExtension = useHasNamiExtension()
-  const { lucid, networkId } = useLucid()
+  const { lucid, networkId } = useCardano()
+
   const { tooligans, setTooligans } = useTooligans(lucid, networkId)
+
   const [selectedTooligan, setSelectedTooligan] = useState<string>()
-
-  // strict equals to avoid undefined
-  if (hasNamiExtension === false)
-    return (
-      <div className={styles.container}>
-        <div className={styles.left} />
-        <div>
-          <h1 className={styles.namiTitle}>
-            This game currently only works with the Nami extension installed.
-          </h1>
-        </div>
-        <div className={styles.right} />
-      </div>
-    )
-
-  // not initialized yet
-  if (!lucid) return null
 
   return (
     <>
+      <div className={styles.connectContainer}>
+        <CardanoWalletSelector />
+      </div>
+
       <a href="https://github.com/GGAlanSmithee/tooligans-game">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
