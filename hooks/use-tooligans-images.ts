@@ -8,8 +8,6 @@ const useTooligansImages = (tooligansAssets: Responses["asset"][]): Image[] => {
   const [loaded, setLoaded] = useState(false)
   const [tooligansImages, setTooligansImages] = useState<Image[]>([])
 
-  console.log(tooligansAssets)
-
   useEffect(() => {
     if (loaded || tooligansAssets.length <= 0) return
 
