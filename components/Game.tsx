@@ -126,7 +126,8 @@ const Game = ({
         return x > t.pos.x && x < t.pos.x + w && y > t.pos.y && y < t.pos.y + h
       })
 
-      if (tooligan) setSelectedTooligan(tooligan.asset.onchain_metadata?.name)
+      if (tooligan && typeof tooligan.asset.onchain_metadata?.name === "string")
+        setSelectedTooligan(tooligan.asset.onchain_metadata?.name)
     }
 
     const handleMouseUp = (e: MouseEvent) => {
